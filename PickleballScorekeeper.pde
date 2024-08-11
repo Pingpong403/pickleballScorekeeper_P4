@@ -61,6 +61,8 @@ void draw()
           // reset game
           if (buttons[i].getCommand() == Command.R)
           {
+            goingTo = 11;
+            winByTwo = true;
             rightTurn = true; // right is first
             rightScore = 0;
             leftScore = 0;
@@ -168,6 +170,8 @@ void draw()
           // reset game
           if (buttons[i].getCommand() == Command.R)
           {
+            goingTo = 11;
+            winByTwo = true;
             gameOver = false;
             rightTurn = true; // right is first
             rightScore = 0;
