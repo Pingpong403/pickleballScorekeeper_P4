@@ -5,6 +5,8 @@ void mouseReleased() {
   // set to false at the end of drawing phase
 }
 
+boolean keyReady = true;
+
 // GAME STUFF
 int goingTo = 11;
 boolean winByTwo = true;
@@ -148,6 +150,98 @@ void draw()
         }
       }
     }
+    if (keyPressed && keyReady)
+    {
+      if (key == 'r' || key == 'R')
+      {
+        goingTo = 11;
+        winByTwo = true;
+        rightTurn = true; // right is first
+        rightScore = 0;
+        leftScore = 0;
+        serve = 2;
+        buttons[1] = new Button(xs[1], ys[1], ws[1], hs[1], cs[1], labels[1]);
+        buttons[4] = new Button(xs[4], ys[4], ws[4], hs[4], cs[4], labels[4]);
+        buttons[5] = new Button(xs[5], ys[5], ws[5], hs[5], cs[5], labels[5]);
+        buttons[6] = new Button(xs[6], ys[6], ws[6], hs[6], cs[6], labels[6]);
+      }
+      // swap
+      else if (key == 's' || key == 'S')
+      {
+        rightTurn = !rightTurn;
+      }
+      // left scored
+      else if (key == 'f' || key == 'F')
+      {
+        if (!rightTurn)
+        {
+          leftScore++;
+          if (leftScore >= goingTo && leftScore > rightScore + (winByTwo ? 1 : 0))
+          {
+            gameOver = true;
+            victoryText = "Left Wins!";
+          }
+        }
+        else
+        {
+          serve++;
+          if (serve == 3)
+          {
+            serve = 1;
+            rightTurn = false;
+          }
+        }
+        buttons[1] = new Button();
+        buttons[4] = new Button();
+        buttons[5] = new Button();
+        buttons[6] = new Button();
+      }
+      // right scored
+      else if (key == 'j' || key == 'J')
+      {
+        if (rightTurn)
+        {
+          rightScore++;
+          if (rightScore >= goingTo && rightScore > leftScore + (winByTwo ? 1 : 0))
+          {
+            gameOver = true;
+            victoryText = "Right Wins!";
+          }
+        }
+        else
+        {
+          serve++;
+          if (serve == 3)
+          {
+            serve = 1;
+            rightTurn = true;
+          }
+        }
+        buttons[1] = new Button();
+        buttons[4] = new Button();
+        buttons[5] = new Button();
+        buttons[6] = new Button();
+      }
+      // decrease goingTo
+      else if (keyCode == DOWN)
+      {
+        if (goingTo > 7)
+          goingTo--;
+      }
+      // increase goingTo
+      else if (keyCode == UP)
+      {
+        goingTo++;
+      }
+      // toggle winByTwo
+      else if (key == 't' || key == 'T')
+      {
+        winByTwo = !winByTwo;
+      }
+      keyReady = false;
+    }
+    else if (!keyPressed)
+      keyReady = true;
   }
   else
   {
@@ -185,6 +279,27 @@ void draw()
         }
       }
     }
+    if (keyPressed && keyReady)
+    {
+      // reset game
+      if (key == 'r' || key == 'R')
+      {
+        goingTo = 11;
+        winByTwo = true;
+        gameOver = false;
+        rightTurn = true; // right is first
+        rightScore = 0;
+        leftScore = 0;
+        serve = 2;
+        buttons[1] = new Button(xs[1], ys[1], ws[1], hs[1], cs[1], labels[1]);
+        buttons[4] = new Button(xs[4], ys[4], ws[4], hs[4], cs[4], labels[4]);
+        buttons[5] = new Button(xs[5], ys[5], ws[5], hs[5], cs[5], labels[5]);
+        buttons[6] = new Button(xs[6], ys[6], ws[6], hs[6], cs[6], labels[6]);
+      }
+      keyReady = false;
+    }
+    else if (!keyPressed)
+      keyReady = true;
   }
   
   // LABELS AND SUCH
@@ -224,6 +339,16 @@ void draw()
   {
     buttons[i].display();
   }
+  
+  // DEBUG
+  //fill(255, 0, 0);
+  //noStroke();
+  //textAlign(CENTER);
+  //textSize(50);
+  //text(key, 500, 450);
+  //text(keyCode, 500, 500);
+  //text(keyPressed ? "kp" : "nkp", 500, 550);
+  //text(keyReady ? "kr" : "nkr", 500, 600);
   
   mouseChoose = false;
 }
